@@ -4,7 +4,7 @@ var outputChannel = vscode.window.createOutputChannel('asd')
 
 function _toTwoDigitHex(n: number): string {
   const r = n.toString(16);
-  outputChannel.appendLine('' + n);
+  outputChannel.appendLine('yo: 1:' + ('0' + r) + ' - 2: ' + r + '   ' + (r.length !== 2 ? '0' + r : r));
   return r.length !== 2 ? '0' + r : r;
 }
 
@@ -16,8 +16,8 @@ class GoColorProvider implements vscode.DocumentColorProvider {
     Thenable<vscode.ColorInformation[]> {
       return new Promise(resolve => {
         resolve([{
-          range: new vscode.Range(0, 0, 0, 1),
-          color: new vscode.Color(25,131,5,.3)
+          range: new vscode.Range(0, 0, 0, 20),
+          color: new vscode.Color(0,0,0,1) // get colors from whats there in text now
         }])
       })
   }
@@ -27,7 +27,7 @@ class GoColorProvider implements vscode.DocumentColorProvider {
       return new Promise(resolve => {
         outputChannel.appendLine('bro' + color.alpha);
         resolve([{
-          label: `#${_toTwoDigitHex(color.red * 255)}${_toTwoDigitHex(color.green * 255)}${_toTwoDigitHex(color.blue * 255)}${_toTwoDigitHex(Math.round(color.alpha * 255))}`
+          label: `#${_toTwoDigitHex(color.red * 255)}${_toTwoDigitHex(color.green * 255)}${_toTwoDigitHex(color.blue * 255)}${color.alpha !== 1 ? _toTwoDigitHex(Math.round(color.alpha * 255)) : ''}`
         }])
       }) 
   }
