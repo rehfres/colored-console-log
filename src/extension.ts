@@ -1,5 +1,13 @@
 import * as vscode from 'vscode';
 
+var outputChannel = vscode.window.createOutputChannel('asd')
+
+function _toTwoDigitHex(n: number): string {
+  const r = n.toString(16);
+  outputChannel.appendLine('' + n);
+  return r.length !== 2 ? '0' + r : r;
+}
+
 const GO_MODE: vscode.DocumentFilter = { language: 'javascript', scheme: 'file' };
 
 class GoColorProvider implements vscode.DocumentColorProvider {
@@ -9,7 +17,7 @@ class GoColorProvider implements vscode.DocumentColorProvider {
       return new Promise(resolve => {
         resolve([{
           range: new vscode.Range(0, 0, 0, 1),
-          color: new vscode.Color(255,0,0,1)
+          color: new vscode.Color(25,131,5,.3)
         }])
       })
   }
@@ -17,8 +25,9 @@ class GoColorProvider implements vscode.DocumentColorProvider {
     color: vscode.Color, context: { document: vscode.TextDocument, range: vscode.Range }, token: vscode.CancellationToken):
     Thenable<vscode.ColorPresentation[]> {
       return new Promise(resolve => {
+        outputChannel.appendLine('bro' + color.alpha);
         resolve([{
-          label: color.red.toString()
+          label: `#${_toTwoDigitHex(color.red * 255)}${_toTwoDigitHex(color.green * 255)}${_toTwoDigitHex(color.blue * 255)}${_toTwoDigitHex(Math.round(color.alpha * 255))}`
         }])
       }) 
   }
