@@ -10,9 +10,24 @@ function toHex(n: number): string {
 }
 
 let newColorIndex = 0
+const colors = [
+  '#c74b16',
+  '#c71f16',
+  '#c7166f',
+  '#6c16c7',
+  '#2516c7',
+  '#1663c7',
+  '#16a9c7',
+  '#16c79e',
+  '#16c72e',
+  '#86c716',
+  '#c7c116',
+  '#c79816',
+  '#c76f16',
+  '#a66037'
+]
 function newColor() {
-  const colors = ['#916e9b', '#d19de0', '#ebb5d5', '#f6c6b4', '#f7d09c', '#dfbead']
-  newColorIndex = (newColorIndex + 1) % 6
+  newColorIndex = (newColorIndex + 1) % colors.length
   return colors[newColorIndex]
 }
 
