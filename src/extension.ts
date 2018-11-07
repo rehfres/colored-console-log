@@ -5,6 +5,7 @@ let b = '#6adb36'
 var selectionRange: vscode.Range
 var selectedText: string
 var a = 0
+var m
 
 function toHex(n: number): string {
   const r = n.toString(16);
@@ -28,10 +29,19 @@ class GoColorProvider implements vscode.DocumentColorProvider {
     Thenable<vscode.ColorInformation[]> {
       // outputChannel.appendLine(JSON.stringify(toRgba(b)));
       return new Promise(resolve => {
-        resolve([{
+        let temp
+        let ss = [{
           range: new vscode.Range(0, 28, 0, 28 + b.length),
           color: toRgba(b)
-        }])
+        }]
+        while (m = /console.log\('%c%s', 'color: /g.exec(vscode.window.activeTextEditor.document.getText())) {
+          console.log(m)
+          // temp.push({
+          //   range: new vscode.Range(0, 28, 0, 28 + b.length),
+          //   color: toRgba(b)
+          // })
+        }
+        resolve(ss)
       })
   }
   public provideColorPresentations(
@@ -48,14 +58,16 @@ class GoColorProvider implements vscode.DocumentColorProvider {
 }
 
 export function activate(ctx: vscode.ExtensionContext): void {
+  console.log('yo')
+  console.log(/console.log\('%c%s', 'color: /g.exec(vscode.window.activeTextEditor.document.getText()))
   vscode.window.onDidChangeTextEditorSelection(event => {
     a++
     // vscode.debug.activeDebugConsole.appendLine(JSON.stringify(vscode.window.activeTextEditor.selection));
     selectionRange = new vscode.Range(vscode.window.activeTextEditor.selection.start, vscode.window.activeTextEditor.selection.end)
     selectedText = vscode.window.activeTextEditor.document.getText(selectionRange)
-    console.log(selectionRange)
-    console.log(selectedText)
-    console.log(vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.end.line))
+    // console.log(selectionRange)
+    // console.log(selectedText)
+    // console.log(vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.end.line))
     if (a >= 3) vscode.window.activeTextEditor.edit(eb => eb.insert(
       new vscode.Position(vscode.window.activeTextEditor.selection.end.line, vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.end.line).range.end.character)
       // new vscode.Position(3,0)
