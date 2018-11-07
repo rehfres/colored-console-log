@@ -57,7 +57,6 @@ class GoColorProvider implements vscode.DocumentColorProvider {
         const positionEnd = positionStart.translate(0, m[1].length)
         temp.push(new vscode.ColorInformation(new vscode.Range(positionStart, positionEnd), toRgba(b[b.length - 1])))
       }
-      console.log(b)
       return new Promise(resolve => {
         resolve(temp)
       })
@@ -83,7 +82,6 @@ export function activate(ctx: vscode.ExtensionContext): void {
     const nextLine = document.lineAt(selection.end.translate(1,0).line)
     const whiteSpacesNumber = Math.max(thisLine.firstNonWhitespaceCharacterIndex, nextLine.firstNonWhitespaceCharacterIndex)
     let spaceee = ' '.repeat(whiteSpacesNumber)
-    console.log(spaceee)
 
     const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
     const insertText = `\n${spaceee}console.log('%c%s', 'color: ${newColor()}', ${selectedText});`
