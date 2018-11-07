@@ -2,6 +2,9 @@ import * as vscode from 'vscode';
 
 var outputChannel = vscode.window.createOutputChannel('asd')
 let b = '#6adb36'
+var selectionRange: vscode.Range
+var selectedText: string
+var a = 0
 
 function toHex(n: number): string {
   const r = n.toString(16);
@@ -45,6 +48,21 @@ class GoColorProvider implements vscode.DocumentColorProvider {
 }
 
 export function activate(ctx: vscode.ExtensionContext): void {
+  vscode.window.onDidChangeTextEditorSelection(event => {
+    a++
+    // vscode.debug.activeDebugConsole.appendLine(JSON.stringify(vscode.window.activeTextEditor.selection));
+    selectionRange = new vscode.Range(vscode.window.activeTextEditor.selection.start, vscode.window.activeTextEditor.selection.end)
+    selectedText = vscode.window.activeTextEditor.document.getText(selectionRange)
+    console.log(selectionRange)
+    console.log(selectedText)
+    console.log(vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.end.line))
+    if (a >= 3) vscode.window.activeTextEditor.edit(eb => eb.insert(
+      new vscode.Position(vscode.window.activeTextEditor.selection.end.line, vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.end.line).range.end.character)
+      // new vscode.Position(3,0)
+      , 
+      `\nconsole.log('%c%s', 'color: ${b}', 'selectedText');`
+    ))
+  })
   ctx.subscriptions.push(
     vscode.languages.registerColorProvider(
       GO_MODE, new GoColorProvider()));
