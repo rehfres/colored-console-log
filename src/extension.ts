@@ -74,7 +74,7 @@ class GoColorProvider implements vscode.DocumentColorProvider {
 }
 
 export function activate(ctx: vscode.ExtensionContext): void {
-  vscode.window.onDidChangeTextEditorSelection(event => {
+  ctx.subscriptions.push(vscode.commands.registerCommand('extension.sayHello', () => {
     const selection = activeEditor.selection
     if (selection.isEmpty) return
     const selectedText = document.getText(selection)
@@ -86,7 +86,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
     const insertText = `\n${spaceee}console.log('%c%s', 'color: ${newColor()}', ${selectedText});`
     activeEditor.edit(eb => eb.insert(endOfThisLine, insertText))
-  })
+  }))
   ctx.subscriptions.push(
     vscode.languages.registerColorProvider(
       GO_MODE, new GoColorProvider()));

@@ -10,6 +10,14 @@
 	"categories": [
 		"Other"
 	],
+	"contributes": {
+    "keybindings": [{
+        "command": "extension.sayHello",
+        "key": "ctrl+c ctrl+c",
+        "mac": "cmd+c cmd+c",
+        "when": "editorTextFocus"
+    }]
+	},
 	"activationEvents": [
 		"*"
 	],
