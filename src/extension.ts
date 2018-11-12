@@ -54,7 +54,7 @@ class GoColorProvider implements vscode.DocumentColorProvider {
       let temp = []
       let m
       let text = document.getText()
-      let pattern = /console.log\('%c%s', 'color: (#([a-f0-9]{6}(?:[a-f0-9]{0,2}))\b)/g
+      let pattern = /console.log\('%c%s.*', 'color: (#([a-f0-9]{6}(?:[a-f0-9]{0,2}))\b)/g
       b = []
       while (m = pattern.exec(text)) {
         b.push(m[1])
@@ -83,7 +83,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     const activeEditor = vscode.window.activeTextEditor
     const document = activeEditor.document
     let selection: (vscode.Selection | vscode.Range) = activeEditor.selection
-    console.log(selection)
+    // console.log(selection)
     if (selection.isEmpty) selection = document.getWordRangeAtPosition(selection.end)
     const selectedText = document.getText(selection)
     const thisLine = document.lineAt(selection.end.line)
@@ -92,7 +92,13 @@ export function activate(ctx: vscode.ExtensionContext): void {
     let spaceee = ' '.repeat(whiteSpacesNumber)
 
     const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
-    const insertText = `\n${spaceee}console.log('%c%s', 'color: ${newColor()}', ${selectedText});`
+    const sss = '%s '.repeat(selectedText.split(/\b\s*,\s*\b/g).length).slice(0, -1)
+    console.log(selectedText.split(/\b\s*,\s*\b/g).length, selectedText.split(/\b\s*,\s*\b/g), sss)
+    let insertTextString = `\n${spaceee}console.log('%c${sss}', 'color: ${newColor()}', ${selectedText});`
+    let insertTextObject = `\n${spaceee}console.log('%c▬', 'color: ${newColor()}', ${selectedText});`
+    let insertText = insertTextString
+    // console.log(document.languageId === 'vue')
+    if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
     activeEditor.edit(eb => eb.insert(endOfThisLine, insertText))
   }))
   ctx.subscriptions.push(
