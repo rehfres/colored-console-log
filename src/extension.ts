@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 
-const activeEditor = vscode.window.activeTextEditor
-const document = activeEditor.document
 let b = ['#6adb36']
 
 function toHex(n: number): string {
@@ -75,6 +73,8 @@ class GoColorProvider implements vscode.DocumentColorProvider {
 
 export function activate(ctx: vscode.ExtensionContext): void {
   ctx.subscriptions.push(vscode.commands.registerCommand('extension.sayHello', () => {
+    const activeEditor = vscode.window.activeTextEditor
+    const document = activeEditor.document
     const selection = activeEditor.selection
     if (selection.isEmpty) return
     const selectedText = document.getText(selection)

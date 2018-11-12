@@ -2,7 +2,7 @@
 	"name": "decorator-sample",
 	"description": "Sample for the decorator API",
 	"version": "0.0.1",
-	"publisher": "Microsoft",
+	"publisher": "rehfres",
 	"license": "MIT",
 	"engines": {
 		"vscode": "^1.15.0"
@@ -13,8 +13,8 @@
 	"contributes": {
     "keybindings": [{
         "command": "extension.sayHello",
-        "key": "ctrl+c ctrl+c",
-        "mac": "cmd+c cmd+c",
+        "key": "ctrl+l ctrl+l",
+        "mac": "cmd+l cmd+l",
         "when": "editorTextFocus"
     }]
 	},
