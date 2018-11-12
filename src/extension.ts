@@ -38,7 +38,14 @@ function toRgba(n: string): vscode.Color {
   return new vscode.Color(r, g, b, a) // get colors from whats there in text now
 }
 
-const GO_MODE: vscode.DocumentFilter = { language: 'javascript', scheme: 'file' };
+const documentFilter: vscode.DocumentFilter[] = [
+  { language: 'javascript', scheme: 'file' },
+  { language: 'typescript', scheme: 'file' },
+  { language: 'vue', scheme: 'file' },
+  { language: 'coffeescript', scheme: 'file' },
+  { language: 'typescriptreact', scheme: 'file' },
+  { language: 'javascriptreact', scheme: 'file' }
+]
 
 class GoColorProvider implements vscode.DocumentColorProvider {
   public provideDocumentColors(
@@ -75,8 +82,9 @@ export function activate(ctx: vscode.ExtensionContext): void {
   ctx.subscriptions.push(vscode.commands.registerCommand('extension.sayHello', () => {
     const activeEditor = vscode.window.activeTextEditor
     const document = activeEditor.document
-    const selection = activeEditor.selection
-    if (selection.isEmpty) return
+    let selection: (vscode.Selection | vscode.Range) = activeEditor.selection
+    console.log(selection)
+    if (selection.isEmpty) selection = document.getWordRangeAtPosition(selection.end)
     const selectedText = document.getText(selection)
     const thisLine = document.lineAt(selection.end.line)
     const nextLine = document.lineAt(selection.end.translate(1,0).line)
@@ -89,5 +97,5 @@ export function activate(ctx: vscode.ExtensionContext): void {
   }))
   ctx.subscriptions.push(
     vscode.languages.registerColorProvider(
-      GO_MODE, new GoColorProvider()));
+      documentFilter, new GoColorProvider()));
 }
