@@ -12,9 +12,14 @@
 	],
 	"contributes": {
     "keybindings": [{
-        "command": "extension.sayHello",
+        "command": "extension.coloredPrimitives",
         "key": "ctrl+l ctrl+l",
         "mac": "cmd+l cmd+l",
+        "when": "editorTextFocus"
+    },{
+        "command": "extension.coloredObject",
+        "key": "ctrl+l ctrl+o",
+        "mac": "cmd+l cmd+o",
         "when": "editorTextFocus"
     }]
 	},
