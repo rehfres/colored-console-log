@@ -10,18 +10,18 @@ function toHex(n: number): string {
 let newColorIndex = 0
 const colors = [
   '#c74b16',
-  '#c71f16',
   '#c7166f',
-  '#6c16c7',
   '#2516c7',
-  '#1663c7',
   '#16a9c7',
-  '#16c79e',
   '#16c72e',
-  '#86c716',
   '#c7c116',
-  '#c79816',
   '#c76f16',
+  '#c71f16',
+  '#6c16c7',
+  '#1663c7',
+  '#16c79e',
+  '#86c716',
+  '#c79816',
   '#a66037'
 ]
 function newColor() {
@@ -90,10 +90,10 @@ function insertConsoleLog (type) {
   const whiteSpacesNumber = Math.max(thisLine.firstNonWhitespaceCharacterIndex, nextLine.firstNonWhitespaceCharacterIndex)
   let spaceee = ' '.repeat(whiteSpacesNumber)
   const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
-  const sss = '%s '.repeat(selectedText.split(/\b\s*,\s*\b/g).length).trim()
-  console.log(selectedText.split(/\b\s*,\s*\b/g).length, selectedText.split(/\b\s*,\s*\b/g), sss)
+  const sss = '%s '.repeat(selectedText.split(/\S\s*,\s*\S/g).length).trim()
+  console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
   let insertText = type === 'primitive' ? `\n${spaceee}console.log('%c${sss}', 'color: ${newColor()}', ${selectedText});`
-    : `\n${spaceee}console.log('%c▬', 'color: ${newColor()}', ${selectedText});`
+    : `\n${spaceee}console.log('%c⧭', 'color: ${newColor()}', ${selectedText});`
   // console.log(document.languageId === 'vue')
   console.log(insertText)
   if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
