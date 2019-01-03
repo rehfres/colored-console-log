@@ -83,21 +83,26 @@ function insertConsoleLog (type) {
   const document = activeEditor.document
   let selection: (vscode.Selection | vscode.Range) = activeEditor.selection
   // console.log(selection)
-  if (selection.isEmpty) selection = document.getWordRangeAtPosition(selection.end)
+  if (selection.isEmpty) selection = document.getWordRangeAtPosition(selection.end) || selection
   const selectedText = document.getText(selection)
   const thisLine = document.lineAt(selection.end.line)
-  const nextLine = document.lineAt(selection.end.translate(1,0).line)
+  let nextLine = document.lineAt(selection.end.translate(1,0).line)
   const whiteSpacesNumber = Math.max(thisLine.firstNonWhitespaceCharacterIndex, nextLine.firstNonWhitespaceCharacterIndex)
   let spaceee = ' '.repeat(whiteSpacesNumber)
   const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
   const sss = '%s '.repeat(selectedText.split(/\S\s*,\s*\S/g).length).trim()
-  console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
+  // console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
   let insertText = type === 'primitive' ? `\n${spaceee}console.log('%c${sss}', 'color: ${newColor()}', ${selectedText});`
     : `\n${spaceee}console.log('%c⧭', 'color: ${newColor()}', ${selectedText});`
   // console.log(document.languageId === 'vue')
-  console.log(insertText)
+  // console.log(insertText)
   if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
-  activeEditor.edit(eb => eb.insert(endOfThisLine, insertText))
+  activeEditor.edit(eb => eb.insert(endOfThisLine, insertText)).then(() => {
+    if (selectedText) return
+    nextLine = document.lineAt(selection.end.translate(1,0).line)
+    const endOfNextLine = new vscode.Position(selection.end.translate(1,0).line, nextLine.range.end.character - 1)
+    activeEditor.selection = new vscode.Selection(endOfNextLine, endOfNextLine)
+  })
 }
 
 export function activate(ctx: vscode.ExtensionContext): void {
