@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
 
 let b = ['#6adb36']
 
 function toHex(n: number): string {
-  const r = n.toString(16);
-  return r.length !== 2 ? '0' + r : r;
+  const r = n.toString(16)
+  return r.length !== 2 ? '0' + r : r
 }
 
 let newColorIndex = 0
@@ -85,7 +85,7 @@ function insertConsoleLog (type) {
   activeEditor.edit(eb => eb.insert(endOfThisLine, insertText)).then(() => {
     if (selectedText) return
     nextLine = document.lineAt(selection.end.translate(1,0).line)
-    const endOfNextLine = new vscode.Position(selection.end.translate(1,0).line, nextLine.range.end.character - 1)
+    const endOfNextLine = new vscode.Position(selection.end.translate(1,0).line, nextLine.range.end.character - (document.languageId === 'vue' ? 1 : 2))
     activeEditor.selection = new vscode.Selection(endOfNextLine, endOfNextLine)
   })
 }
@@ -95,5 +95,5 @@ export function activate(ctx: vscode.ExtensionContext): void {
   ctx.subscriptions.push(vscode.commands.registerCommand('extension.coloredObject', () => insertConsoleLog('object')))
   ctx.subscriptions.push(
     vscode.languages.registerColorProvider(
-      documentFilter, new GoColorProvider()));
+      documentFilter, new GoColorProvider()))
 }

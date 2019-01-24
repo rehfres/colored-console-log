@@ -1,7 +1,7 @@
 {
 	"name": "colored-console-log",
-	"description": "Sample for the decorator API",
-	"version": "0.0.1",
+	"description": "Creates colored console.log messages for browser",
+	"version": "1.0.0",
 	"publisher": "rehfres",
 	"license": "MIT",
 	"engines": {
@@ -10,6 +10,8 @@
 	"categories": [
 		"Other"
 	],
+	"repository": "https://github.com/rehfres/colored-console-log",
+	"icon": "icon.png",
 	"contributes": {
 		"keybindings": [
 			{
