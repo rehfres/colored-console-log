@@ -8,22 +8,7 @@ function toHex(n: number): string {
 }
 
 let newColorIndex = 0
-const colors = [
-  '#c74b16',
-  '#c7166f',
-  '#2516c7',
-  '#16a9c7',
-  '#16c72e',
-  '#c7c116',
-  '#c76f16',
-  '#c71f16',
-  '#6c16c7',
-  '#1663c7',
-  '#16c79e',
-  '#86c716',
-  '#c79816',
-  '#a66037'
-]
+const colors = ['#ff0000', '#f2ceb6', '#00e600', '#00a3cc', '#aa00ff', '#e50000', '#733d00', '#00bf00', '#0088cc', '#917399', '#d90000', '#ffa640', '#00b300', '#1d5673', '#f200e2', '#731d1d', '#807160', '#007300', '#006dcc', '#731d6d', '#e57373', '#997326', '#bfffc8', '#1d3f73', '#cc0088', '#735656', '#ffcc00', '#408059', '#99adcc', '#f279ca', '#d9aaa3', '#7f7700', '#00ff88', '#00258c', '#994d75', '#7f2200', '#e5de73', '#33cc99', '#364cd9', '#e6accb', '#ffa280', '#eeff00', '#73998c', '#514080', '#8c0038', '#99614d', '#c9cc99', '#00736b', '#d0bfff', '#cc0036', '#ff6600', '#607339', '#40fff2', '#5200cc', '#f27999', '#cc7033', '#86bf60', '#ace2e6', '#9c66cc']
 function newColor() {
   newColorIndex = (newColorIndex + 1) % colors.length
   return colors[newColorIndex]
