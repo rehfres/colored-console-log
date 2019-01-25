@@ -6,4 +6,4 @@ Creates colored console.log messages for the browser.
 
 > `Ctrl+L Ctrl+L` creates a colored message for primitive values
 
-> `Ctrl+L Ctrl+O` creates a message (primarily) for objects, prepending a colored ⧭ symbol to it
+> `Ctrl+L Ctrl+O` creates a message for both primitives *and* objects, prepending a colored ⧭ symbol to it
