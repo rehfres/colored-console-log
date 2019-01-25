@@ -2,7 +2,7 @@
 	"name": "colored-console-log",
 	"displayName": "Colored Console Log",
 	"description": "Creates colored console.log messages for browser",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"publisher": "rehfres",
 	"license": "MIT",
 	"engines": {
