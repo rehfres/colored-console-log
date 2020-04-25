@@ -7,10 +7,10 @@ function toHex(n: number): string {
   return r.length !== 2 ? '0' + r : r
 }
 
-let newColorIndex = 0
-const colors = ['#ff0000', '#f2ceb6', '#00e600', '#00a3cc', '#aa00ff', '#e50000', '#733d00', '#00bf00', '#0088cc', '#917399', '#d90000', '#ffa640', '#00b300', '#1d5673', '#f200e2', '#731d1d', '#807160', '#007300', '#006dcc', '#731d6d', '#e57373', '#997326', '#bfffc8', '#1d3f73', '#cc0088', '#735656', '#ffcc00', '#408059', '#99adcc', '#f279ca', '#d9aaa3', '#7f7700', '#00ff88', '#00258c', '#994d75', '#7f2200', '#e5de73', '#33cc99', '#364cd9', '#e6accb', '#ffa280', '#eeff00', '#73998c', '#514080', '#8c0038', '#99614d', '#c9cc99', '#00736b', '#d0bfff', '#cc0036', '#ff6600', '#607339', '#40fff2', '#5200cc', '#f27999', '#cc7033', '#86bf60', '#ace2e6', '#9c66cc']
-function newColor() {
-  newColorIndex = (newColorIndex + 1) % colors.length
+const colors = ['#ff0000', '#00e600', '#00a3cc', '#aa00ff', '#e50000', '#733d00', '#00bf00', '#0088cc', '#917399', '#d90000', '#ffa640', '#00b300', '#1d5673', '#f200e2', '#731d1d', '#807160', '#007300', '#006dcc', '#731d6d', '#e57373', '#997326', '#bfffc8', '#1d3f73', '#cc0088', '#735656', '#ffcc00', '#408059', '#99adcc', '#f279ca', '#7f7700', '#00ff88', '#00258c', '#994d75', '#7f2200', '#e5de73', '#33cc99', '#364cd9', '#ffa280', '#eeff00', '#73998c', '#514080', '#8c0038', '#99614d', '#00736b', '#d0bfff', '#cc0036', '#ff6600', '#607339', '#40fff2', '#5200cc', '#f27999', '#cc7033', '#86bf60', '#ace2e6', '#9c66cc']
+function newColor(workspaceState: vscode.Memento) {
+  const newColorIndex = (+workspaceState.get('colorIndex') + 1 || 0) % colors.length
+  workspaceState.update('colorIndex', newColorIndex)
   return colors[newColorIndex]
 }
 
@@ -63,7 +63,7 @@ class GoColorProvider implements vscode.DocumentColorProvider {
   }
 }
 
-function insertConsoleLog (type) {
+function insertConsoleLog (type: string, workspaceState: vscode.Memento) {
   const activeEditor = vscode.window.activeTextEditor
   const document = activeEditor.document
   let selection: (vscode.Selection | vscode.Range) = activeEditor.selection
@@ -77,8 +77,8 @@ function insertConsoleLog (type) {
   const endOfThisLine = new vscode.Position(selection.end.line, thisLine.range.end.character)
   const sss = '%s '.repeat(selectedText.split(/\S\s*,\s*\S/g).length).trim()
   // console.log(selectedText.split(/\S\s*,\s*\S/g).length, selectedText.split(/\S\s*,\s*\S/g), sss)
-  let insertText = type === 'primitive' ? `\n${spaceee}console.log('%c${sss}', 'color: ${newColor()}', ${selectedText});`
-    : `\n${spaceee}console.log('%c⧭', 'color: ${newColor()}', ${selectedText});`
+  let insertText = type === 'primitive' ? `\n${spaceee}console.log('%c${sss}', 'color: ${newColor(workspaceState)}', ${selectedText});`
+    : `\n${spaceee}console.log('%c⧭', 'color: ${newColor(workspaceState)}', ${selectedText});`
   // console.log(document.languageId === 'vue')
   // console.log(insertText)
   if (document.languageId === 'vue') insertText = insertText.slice(0, -1)
@@ -91,8 +91,8 @@ function insertConsoleLog (type) {
 }
 
 export function activate(ctx: vscode.ExtensionContext): void {
-  ctx.subscriptions.push(vscode.commands.registerCommand('extension.coloredPrimitives', () => insertConsoleLog('primitive')))
-  ctx.subscriptions.push(vscode.commands.registerCommand('extension.coloredObject', () => insertConsoleLog('object')))
+  ctx.subscriptions.push(vscode.commands.registerCommand('extension.coloredPrimitives', () => insertConsoleLog('primitive', ctx.workspaceState)))
+  ctx.subscriptions.push(vscode.commands.registerCommand('extension.coloredObject', () => insertConsoleLog('object', ctx.workspaceState)))
   ctx.subscriptions.push(
     vscode.languages.registerColorProvider(
       documentFilter, new GoColorProvider()))
